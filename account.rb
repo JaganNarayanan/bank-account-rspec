@@ -9,26 +9,34 @@ class Account
   end
 
   def balance
-    transactions.inject(:+)
+    transactions.inject(:+) #sums up the elements in the array
   end
 
-  def acct_number
+  def acct_number #returns encrypted acct_number
     hidden_length = @acct_number.length - 4
     @acct_number.sub(Regexp.new("^.{#{hidden_length}}"), "*" * hidden_length)
   end
 
-  def deposit!(amount) 
-    raise NegativeDepositError if amount < 0 
-    add_transaction(amount)
+  def deposit!(amount) #adds a positive transaction, returns balance
+    if amount.is_a?(String)
+      raise ArgumentError
+    else
+      raise NegativeDepositError if amount < 0
+      add_transaction(amount)
 
-    balance
+      balance
+    end
   end
 
-  def withdraw!(amount)
-    amount = -amount if amount > 0
-    add_transaction(amount)
+  def withdraw!(amount) #adds a negative transaction, returns balance
+    if amount.is_a?(String)
+      raise ArgumentError
+    else
+      amount = -amount if amount > 0
+      add_transaction(amount)
 
-    balance
+      balance
+    end 
   end
 
 private
