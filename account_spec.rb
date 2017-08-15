@@ -18,6 +18,9 @@ describe Account do
       it "throws an argument error when not given a type argument" do
         expect {Account.new}.to raise_error(ArgumentError)
       end
+      it "should raise a standard error when invalid acct_number is passed" do
+        expect {Account.new("123")}.to raise_error(StandardError)
+      end
     end
   end
 
@@ -77,6 +80,11 @@ describe Account do
         expect(account.withdraw!(-5)).to eq(5)
       end
     end
+    context "with invalid input" do
+      it "should raise a standard error when an overdraft is made" do
+        expect {account.withdraw!(10)}.to raise_error(StandardError)
+      end
+    end 
   end
 
 end
